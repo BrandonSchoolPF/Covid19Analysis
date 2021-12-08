@@ -1,0 +1,40 @@
+#These commands were written in R using SqlDF package but written for SQL so the FROM arguements will have different data being used, the R script that I will provide will show this. 
+
+
+#Showing what percentage of the population had covid in each country
+
+SELECT location, date, population, total_cases, (total_cases/population)*100 AS covid_percentage
+FROM data #Original dataset changed to "data"
+
+
+#Showing which date had the most covid cases for each country, or most covid cases in one day for each country
+
+SELECT location, date, population, total_cases, MAX(covid_percentage)
+FROM Covid_percentage
+GROUP BY location, population
+
+
+#Showing the percentage of deaths from cases to covid related death from each country.
+
+SELECT Location, date, population, total_cases, total_deaths, (total_deaths/total_cases)*100
+FROM data
+
+
+#Showing which date from each country had the most covid related deaths
+SELECT location, date, population, total_cases, MAX(total_deaths), Death_percentage
+FROM deaths_percentage
+GROUP BY location, population")
+
+
+#Showing which continent had the most total covid cases
+SELECT continent, SUM(new_cases)
+FROM data
+WHERE continent != '' AND new_cases != '' #R saw null values as'' not 'NULL' 
+GROUP BY continent
+
+#Showing most covid related deaths per continent 
+
+SELECT continent, SUM(new_deaths)
+FROM data
+WHERE continent != '' AND new_deaths != ''
+GROUP BY continent
